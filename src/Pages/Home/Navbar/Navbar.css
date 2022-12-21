@@ -1,0 +1,15 @@
+.navbar-custom{
+    align-items: center;
+}
+
+.nabvar-items{
+    margin-left: 2rem;
+    justify-content: space-between;
+}
+.navbar-left-side{
+    margin-right: 1rem;
+}
+
+.active-link{
+    border-bottom: solid var(--primary-two) 1px;
+}

@@ -1,0 +1,47 @@
+.firstSlide{
+    background-image: url('https://timelinecovers.pro/facebook-cover/download/burger-with-french-fries-facebook-cover.jpg');
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35vh;
+}
+.secondSlide{
+    background-image: url('https://realfood.tesco.com/media/images/1400x919-MargaritaPizza-555a4065-2573-4b41-bcf3-7193cd095d8f-0-1400x919.jpg');
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35vh;
+    
+}
+.thirdSlide{
+    background-image: url('https://images.pexels.com/photos/45202/brownie-dessert-cake-sweet-45202.jpeg?cs=srgb&dl=pexels-pixabay-45202.jpg&fm=jpg');
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35vh;
+}
+
+.content{
+    padding-top: 29vh;
+    /* background-color: #eaeff1; */
+    height: 200vh;
+}
+.menuItem:hover{
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+}
+.cart-card{
+    /* width: 25%;
+    left: 63rem;
+    top: 18rem; */
+}
+.itemsCard{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-left: 1rem;
+}

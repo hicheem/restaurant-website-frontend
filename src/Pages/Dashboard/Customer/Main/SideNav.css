@@ -1,0 +1,9 @@
+.sideNav{
+    width:13rem;
+    /* padding-left: 1rem; */
+    
+}
+
+.Mui-selected{
+    background-color:red;
+}

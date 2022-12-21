@@ -1,0 +1,21 @@
+// @import "../node_modules/bootstrap/scss/functions";
+
+// @import "../node_modules/bootstrap/scss/variables";
+// @import "../node_modules/bootstrap/scss/mixins";
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;300&display=swap');
+
+
+$font-family-base: 'Open Sans', sans-serif;
+// $primary : #34B891;
+// $primary : #247F9E;
+$primary:#F3686A;
+$secondary : #6af368;
+$link-decoration: none;
+$link-color:white;
+
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+
+

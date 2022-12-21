@@ -1,0 +1,19 @@
+
+.home-hero{
+    background-image: url('../../Assets/burger.webp');
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-color: rgba(0,0,0,0.35);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10rem;
+    /* padding-left: 8rem; */
+    /* opacity: 0.6; */
+    color: white;
+}
+

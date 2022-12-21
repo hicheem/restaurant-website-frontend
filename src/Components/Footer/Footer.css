@@ -1,0 +1,27 @@
+.home-page-footer-end{
+    display: flex;
+    flex-direction: column;
+}
+.footer-end{
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+}
+.footer-separate{
+    border-top: 1px solid gray;
+    width: 90%;
+    align-self: center;
+}
+.footer-end ul{
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+}
+.footer-end li:hover{
+    cursor: pointer;
+    color: var(--secondary);
+    transition: 1s ease;
+}
+.footer-end li:not(hover){
+    transition: 1s ease;
+}
