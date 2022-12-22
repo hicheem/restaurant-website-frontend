@@ -5,7 +5,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import Main from './Pages/Dashboard/Customer/Main/Main';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Orders from './Pages/Dashboard/Customer/Orders/Orders';
@@ -18,6 +18,14 @@ function App() {
 
   const [userStatus, setUserStatus] = useState(false);
   const [user, setUser] = useState(null);
+  
+  // useEffect(() => {
+  //   const loggedInUser = window.localStorage.getItem('user')
+  //   if(loggedInUser){
+  //     setUserStatus(true)
+  //     setUser(JSON.parse(loggedInUser))
+  //   }
+  // },[])
 
   return (
     <div className="App">

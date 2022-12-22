@@ -1,6 +1,6 @@
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
-import { Avatar, Divider, MenuItem , ListItemIcon, Menu, Tooltip, IconButton, Chip } from '@mui/material';
+import { Avatar, Divider, MenuItem , ListItemIcon, Menu, Tooltip, IconButton } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

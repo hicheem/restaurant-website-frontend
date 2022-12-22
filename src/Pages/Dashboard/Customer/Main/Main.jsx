@@ -10,9 +10,13 @@ import './Main.css';
 
 import SideNav from './SideNav';
 import CartDiv from './CartDiv';
+
+
+
+
 const Main = () => {
   
-  
+
   const [menus, setMenus] = useState([])
   const [items, setItems] = useState([])
   
@@ -22,7 +26,10 @@ const Main = () => {
   const [item, setItem] = useState(null)
   const [cart, setCart] = useState([])
 
-  useEffect(() => {
+  
+  
+  
+  const getMenu = () => {
     axios('http://localhost:3003/api/menu/menus')
     .then(res => {
       setMenus(res.data.menus)
@@ -30,8 +37,13 @@ const Main = () => {
       setOpen(false)
     })
     .catch(err => console.log(err))
-  },[])
+  }
+
   
+  useEffect(() => {
+    getMenu()
+  },[])
+
   const [open, setOpen] = useState(true);
 
   const selectItem = (id) => {
@@ -42,7 +54,6 @@ const Main = () => {
   useEffect(()=> {
     selectItem(selectedItem)
   },[selectedItem])
-
   
   return (
     
@@ -55,7 +66,8 @@ const Main = () => {
       <CircularProgress color="inherit" />
     </Backdrop>
     <header>
-      <NavBar cart={cart}/>
+      <NavBar />  
+      {/* bookingLength={booking.booking.length} */}
       <div className='myCarasoul'>
         <div id="carouselExampleSlidesOnly" className="carousel slide" data-bs-ride="carousel" style={{height:'5rem'}}>
           <div className="carousel-inner">

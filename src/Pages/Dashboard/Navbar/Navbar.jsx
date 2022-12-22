@@ -1,13 +1,15 @@
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 import AccountMenu from './AccountMenu'
 import './Navbar.css'
 import Searchcomp from './Searchcomp';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -21,6 +23,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Navbar = (props) => {
   
+
+
   const navigate = useNavigate()
   
   const [navbar, setNavbar] = useState(false)
@@ -58,8 +62,8 @@ const Navbar = (props) => {
             }}>
             <Tooltip title="Orders" placement="bottom" onClick={()=>navigate('orders')}>
               <IconButton aria-label="notification" >
-                <StyledBadge badgeContent={4} color='success'>
-                  <ShoppingCartIcon />
+                <StyledBadge badgeContent='' color='success'>
+                  <ShoppingBagIcon />
                 </StyledBadge>
               </IconButton>
             </Tooltip>
