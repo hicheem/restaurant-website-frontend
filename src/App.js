@@ -8,7 +8,7 @@ import Login from './Pages/Login/Login';
 import { createContext, useState } from 'react';
 import Main from './Pages/Dashboard/Customer/Main/Main';
 import { createTheme, ThemeProvider } from '@mui/material';
-import Orders from './Pages/Dashboard/Customer/Main/Orders';
+import Orders from './Pages/Dashboard/Customer/Orders/Orders';
 import ProtectedRoute from './Components/ProtectedRoute';
 
 export const UserStatusContext = createContext()

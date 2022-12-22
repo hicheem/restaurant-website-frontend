@@ -19,7 +19,7 @@ const CartDiv = (props) => {
 
   return (
     <div>
-      <ConfirmOrderDialog dialogOrder={dialogOrder} setDialogOrder={setDialogOrder} cart={props.cart}/>
+      <ConfirmOrderDialog dialogOrder={dialogOrder} setDialogOrder={setDialogOrder} cart={props.cart} setCart={props.setCart}/>
       <div className="card bg-light mb-3" style={{maxWidth: '18rem', width:'17rem'}}>
         <div className="card-header d-flex align-items-center gap-2">
           <ShoppingCartIcon/>

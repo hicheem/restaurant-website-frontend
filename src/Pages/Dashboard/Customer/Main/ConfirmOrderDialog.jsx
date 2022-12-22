@@ -1,107 +1,112 @@
-import { Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, InputAdornment, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
+import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
+import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../../../App';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PublicIcon from '@mui/icons-material/Public';
+import FinalStep from '../Steps/FinalStep';
+import StepOne from '../Steps/StepOne';
+import StepThree from '../Steps/StepThree';
+import StepTwo from '../Steps/StepTwo';
 
 const CurrentStep = (props) =>{
+    
+    const [paymentMethod, setPaymentMethod] = useState(0)
+    const [orderMethod, setOrderMethod] = useState(0)
+
     if(props.step === 0){
-        return (
-            <div>
-                <div className="my-4 d-flex gap-3">
-                    <h5>Total : </h5>
-                    <h5 className='text-danger'>
-                        {
-                            props.cart.reduce((acc, item) => acc + item.price, 0)
-                        }           
-                        DA
-                    </h5>
-                </div>
-                {
-                    props.cart.map((item, index) => (
-                        <List >
-                            <ListItem style ={ index % 2? { background : "#eaeff1"}:{ background : "white" }} >
-                                <ListItemText primary={<Typography className='fw-bold text-danger'>{item.quantity}</Typography>}/>
-                                <ListItemText primary={<Typography >{item.title}</Typography>}/>
-                                <ListItemText primary={<Typography className='fw-bold text-danger'>{item.price}DA</Typography>} />
-                            </ListItem>
-                        </List>
-                    ))
-                }
-                <Divider/>
-                
-            </div>
-        )
+        return <StepOne cart={props.cart} order={props.order} setOrder={props.setOrder}/>
     }
     else if(props.step === 1)
     {
-        
-        return (
-            <div>
-                <div className='d-flex gap-1'>
-                    <Chip label="Deliver" variant="outlined" className={`${props.method === 0? 'bg-secondary' : ''}`} onClick={()=>props.setMethod(0)}/>
-                    <Chip label="Book a Table" variant="outlined" className={`${props.method === 1? 'bg-secondary' : ''}`}  onClick={()=>props.setMethod(1)}/>
-                </div>
-                {
-                    props.method === 0 ?
-                        <div className="my-4 text-center d-flex flex-column gap-3">
-                            <TextField
-                                disabled
-                                id="outlined-disabled"
-                                label="City"
-                                defaultValue={props.user.city}
-                                InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment position="start">
-                                        <PublicIcon />
-                                      </InputAdornment>
-                                    ),
-                                  }}
-                            />
-                            <TextField
-                                id="outlined-disabled"
-                                label="Adress"
-                                placeholder='Type your address'
-                                InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment position="start">
-                                        <LocationOnIcon />
-                                      </InputAdornment>
-                                    ),
-                                  }}
-                            />
-                        </div>
-                    :
-                    <div className="">Table</div>
-                }
-            </div>
-        )
-        }
+        return <StepTwo table={props.table} setTable={props.setTable} orderMethod={orderMethod} setOrderMethod={setOrderMethod} order={props.order} setOrder={props.setOrder}/>
+    }
+    else if(props.step === 2)
+    {
+        return <StepThree order={props.order} setOrder={props.setOrder} paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
+    }
+    else if(props.step === 3)
+    {
+        return <FinalStep order={props.order}/>
+    }
+    else
+        return <></>
 }
 const ConfirmOrderDialog = (props) => {
 
-    const [user, setUser] = useContext(UserContext)
+    const [user, ] = useContext(UserContext)
 
-    const steps = ['Verify orders', 'Order method', 'Paymenet method', 'Finish']
+    const steps = ['Verify orders', 'Order method', 'Payment method', 'Finish']
     const [step, setStep] = useState(0)
-    const [method, setMethod] = useState(0)
+    const [table, setTable] = useState({code:null})
 
+    const [order, setOrder] = useState({user})
+
+    const [open, setOpen] = useState(false);
+
+    console.log(step)
     const handleNext = () => {
-        setStep(step + 1)
+        if(step<3)
+            setStep(step + 1)
+        else    
+            fetchBook()
     }
     const handleBack = () => {
-        if(step === 0)
-            props.setDialogOrder(false)
-        else 
         setStep(step - 1)
     }
-    const handleOrderMethod = () => {
-        if(method === 1){
-            
-        }
+    const handleCancel = () => {
+        setStep(0)
+        props.setDialogOrder(false)
     }
+    const fetchBook = () => {
+        
+        setOpen(true)
+        axios.post('http://localhost:3003/api/book/AddBook',
+            {
+                userId : order.user.id, 
+                firstName : order.user.firstName, 
+                lastName : order.user.lastName, 
+                email : order.user.email, 
+                mobile : order.user.mobile, 
+                tableId : order.table.id
+            }
+        )
+        .then(res => {
+            if(res.status === 201){
+                console.log(res.data.message)
+                const bookingId = res.data.bookingId
+                fetchCartItems(bookingId)
+                setOpen(false)
+                reset()
+                props.setDialogOrder(false)
+            }
+        })
+    }
+    
+    const fetchCartItems = (bookingId) => {
+        console.log(props.cart[0]);
+        props.cart.map(item => (
+            axios.post('http://localhost:3003/api/book/addBookItem',
+                {
+                    item,
+                    bookingId
+                }
+            )
+            .then(res => {
+                console.log(res.data.message)
+            })
+        ))
+    }
+    
+
+    const reset = () => {
+        setStep(-1)
+        setTable({code:null})
+        setOrder({user})
+        props.setCart([])
+    }
+    
   return (
     <div>
+        
         <Dialog
         sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
         maxWidth="xs"
@@ -110,14 +115,30 @@ const ConfirmOrderDialog = (props) => {
         <DialogTitle className='fw-bold'>{steps[step]}</DialogTitle>
         
         <DialogContent dividers>
-        {
-
-        }
-        <CurrentStep step={step} cart={props.cart} method={method} setMethod={setMethod} user={user}/>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={open}
+            >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+            <CurrentStep 
+                step={step} 
+                cart={props.cart}
+                setTable={setTable}
+                table={table}
+                order={order}
+                setOrder={setOrder}
+            />
         </DialogContent>
         <DialogActions>
-          <div className="btn btn-danger" onClick={handleBack}>{step === 0 ? 'Cancel' : 'Back'}</div>
-          <div className="btn btn-secondary" onClick={handleNext}>Next</div>
+        <div className="btn btn-outline-danger position-absolute" style={{left:'1rem'}} onClick={() => {setOrder({user})}}>Reset</div>
+        <div className="btn btn-danger" onClick={handleCancel}>Cancel</div>
+            {
+                step > 0 ? 
+                <div className='btn btn-warning' onClick={handleBack}>Back</div>                
+                : <></>
+            }
+          <div className="btn btn-secondary" onClick={handleNext}>{step===3 ? 'Order' : 'Next'}</div>
         </DialogActions>
       </Dialog>
     </div>

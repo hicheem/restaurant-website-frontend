@@ -37,7 +37,7 @@ const Navbar = (props) => {
       <AppBar position='fixed' color='transparent' sx={{
           width:'90%',
           transition:'0.2s',
-          borderRadius:navbar?'3rem': '',
+          borderRadius:navbar?'3rem': '3rem',
           height:'3rem',
           my:'1rem',
           mx:'4rem',
@@ -58,7 +58,7 @@ const Navbar = (props) => {
             }}>
             <Tooltip title="Orders" placement="bottom" onClick={()=>navigate('orders')}>
               <IconButton aria-label="notification" >
-                <StyledBadge badgeContent={props.cart.length} color='success'>
+                <StyledBadge badgeContent={4} color='success'>
                   <ShoppingCartIcon />
                 </StyledBadge>
               </IconButton>

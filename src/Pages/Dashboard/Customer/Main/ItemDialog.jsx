@@ -1,8 +1,7 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Tooltip, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useEffect } from 'react';
 
 const ItemDialog = (props) => {
 
@@ -13,7 +12,7 @@ const ItemDialog = (props) => {
 
     const handleOk = () => {
         let oldQuantity = 0;
-        const filteredCart = props.cart.filter(function(item){
+        const filteredCart = props.cart.filter((item) => {
             if(item.id === props.item.item_id)
                 oldQuantity = item.quantity
             else    
