@@ -1,23 +1,22 @@
 import { Chip } from '@mui/material'
+import { useState } from 'react'
 
 
 const StepThree = (props) => {
 
+  const [paymentMethod, setPaymentMethod] = useState(0)
+
     const handleClick = (index) =>() => {
 
-        props.setPaymentMethod(index)
-        console.log(props.paymentMethod)
+        setPaymentMethod(index)
+        console.log(paymentMethod)
         props.setOrder({...props.order, payment:index})
-        // if(props.paymentMethod === index)
-        //     props.setOrder({...props.order, payment:'credit card'})
-        // else
-        //     props.setOrder({...props.order, payment:'cash'})
     }
   return (
     <div>
         <div className='d-flex gap-1'>
-            <Chip label="Credit Card" variant="outlined" className={`${props.paymentMethod === 0? 'bg-secondary' : ''}`} onClick={handleClick(0)}/>
-            <Chip label="Cash" variant="outlined" className={`${props.paymentMethod === 1? 'bg-secondary' : ''}`}  onClick={handleClick(1)}/>
+            <Chip label="Credit Card" variant="outlined" className={`${props.order.payment === 0? 'bg-secondary' : ''}`} onClick={handleClick(0)}/>
+            <Chip label="Cash" variant="outlined" className={`${props.order.payment === 1? 'bg-secondary' : ''}`}  onClick={handleClick(1)}/>
         </div>
     </div>
   )

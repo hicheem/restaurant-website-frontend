@@ -30,7 +30,7 @@ const Main = () => {
   
   
   const getMenu = () => {
-    axios('http://localhost:3003/api/menu/menus')
+    axios('http://localhost:3003/api/menu/menusWithItems')
     .then(res => {
       setMenus(res.data.menus)
       setItems(res.data.items)

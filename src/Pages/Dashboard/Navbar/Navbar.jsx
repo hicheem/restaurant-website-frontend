@@ -38,7 +38,7 @@ const Navbar = (props) => {
   window.addEventListener('scroll', changeBackgroundNav)
 
   return (
-      <AppBar position='fixed' color='transparent' sx={{
+      <AppBar  color='transparent' sx={{
           width:'90%',
           transition:'0.2s',
           borderRadius:navbar?'3rem': '3rem',

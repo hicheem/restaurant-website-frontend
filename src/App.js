@@ -10,6 +10,13 @@ import Main from './Pages/Dashboard/Customer/Main/Main';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Orders from './Pages/Dashboard/Customer/Orders/Orders';
 import ProtectedRoute from './Components/ProtectedRoute';
+import AdminMain from './Pages/Dashboard/Admin/AdminMain';
+import SharedLayout from './Pages/Dashboard/Admin/SharedLayout/SharedLayout';
+import Users from './Pages/Dashboard/Admin/Content/Users';
+import Menu from './Pages/Dashboard/Admin/Content/Menu';
+import Dish from './Pages/Dashboard/Admin/Content/Dish';
+import Booking from './Pages/Dashboard/Admin/Content/Booking/Booking';
+
 
 export const UserStatusContext = createContext()
 export const UserContext = createContext()
@@ -19,13 +26,7 @@ function App() {
   const [userStatus, setUserStatus] = useState(false);
   const [user, setUser] = useState(null);
   
-  // useEffect(() => {
-  //   const loggedInUser = window.localStorage.getItem('user')
-  //   if(loggedInUser){
-  //     setUserStatus(true)
-  //     setUser(JSON.parse(loggedInUser))
-  //   }
-  // },[])
+ 
 
   return (
     <div className="App">
@@ -36,6 +37,17 @@ function App() {
             <Routes>
               <Route path='/' element={<Home/>}/>
               <Route path='/login' element={<Login user={user} setUser={setUser}/>}/>
+              <Route path='/adminDashboard' element={
+                  <ProtectedRoute>
+                    <SharedLayout/>
+                  </ProtectedRoute>
+                }>
+                <Route index element={<AdminMain/>}/>
+                <Route path='users' element={<Users/>}/>
+                <Route path='menu' element={<Menu/>}/>
+                <Route path='dish' element={<Dish/>}/>
+                <Route path='booking' element={<Booking/>}/>
+              </Route> 
               <Route path='/customerDashboard'>
                 <Route index element={
                   <ProtectedRoute>
@@ -44,6 +56,9 @@ function App() {
                 }/>
                 <Route path='orders' element={<Orders/>}/>
               </Route>
+
+              
+
             </Routes>
         </BrowserRouter>
       </UserContext.Provider>
@@ -54,7 +69,6 @@ function App() {
 }
 
 export default App;
-
 
 let theme = createTheme({
   palette: {
@@ -94,7 +108,7 @@ theme = {
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          // backgroundColor: '#081627',
+          backgroundColor: '#081627',
         },
       },
     },

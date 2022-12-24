@@ -42,13 +42,12 @@ const Login = (props) => {
                 props.setUser(data.user)
                 window.localStorage.setItem("token",data.token)
                 window.localStorage.setItem("role",data.role || "")
-                window.localStorage.setItem("user", data.user)
+                window.localStorage.setItem("user", JSON.stringify(data.user))
                 window.localStorage.setItem("userStatus", true)
                 navigate(`/${data.role}Dashboard`);
             }
         })
     };
-    console.log("user ===> ", props.user)
     return(
         <div>
         <div className='login-page' >

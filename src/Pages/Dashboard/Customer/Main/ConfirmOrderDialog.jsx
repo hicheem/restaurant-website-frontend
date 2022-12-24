@@ -1,7 +1,6 @@
 import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
-import { UserContext } from '../../../../App';
+import React, { useState } from 'react'
 import FinalStep from '../Steps/FinalStep';
 import StepOne from '../Steps/StepOne';
 import StepThree from '../Steps/StepThree';
@@ -9,45 +8,37 @@ import StepTwo from '../Steps/StepTwo';
 
 const CurrentStep = (props) =>{
     
-    const [paymentMethod, setPaymentMethod] = useState(0)
-    const [orderMethod, setOrderMethod] = useState(0)
+    switch (props.step) {
+        case 0:
+            return <StepOne cart={props.cart} order={props.order} setOrder={props.setOrder}/>
+        case 1:
+            return <StepTwo order={props.order} setOrder={props.setOrder}/>
+        case 2:
+            return <StepThree order={props.order} setOrder={props.setOrder} />
+        case 3:
+            return <FinalStep order={props.order}/>
+        default:
+            break;
+    }
 
-    if(props.step === 0){
-        return <StepOne cart={props.cart} order={props.order} setOrder={props.setOrder}/>
-    }
-    else if(props.step === 1)
-    {
-        return <StepTwo table={props.table} setTable={props.setTable} orderMethod={orderMethod} setOrderMethod={setOrderMethod} order={props.order} setOrder={props.setOrder}/>
-    }
-    else if(props.step === 2)
-    {
-        return <StepThree order={props.order} setOrder={props.setOrder} paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
-    }
-    else if(props.step === 3)
-    {
-        return <FinalStep order={props.order}/>
-    }
-    else
-        return <></>
 }
 const ConfirmOrderDialog = (props) => {
 
-    const [user, ] = useContext(UserContext)
 
     const steps = ['Verify orders', 'Order method', 'Payment method', 'Finish']
     const [step, setStep] = useState(0)
-    const [table, setTable] = useState({code:null})
 
-    const [order, setOrder] = useState({user})
+    const [order, setOrder] = useState({})
 
     const [open, setOpen] = useState(false);
 
-    console.log(step)
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    
     const handleNext = () => {
         if(step<3)
             setStep(step + 1)
         else    
-            fetchBook()
+            fetchOrder()
     }
     const handleBack = () => {
         setStep(step - 1)
@@ -56,38 +47,89 @@ const ConfirmOrderDialog = (props) => {
         setStep(0)
         props.setDialogOrder(false)
     }
-    const fetchBook = () => {
-        
+    const fetchOrder = async () => {
         setOpen(true)
-        axios.post('http://localhost:3003/api/book/AddBook',
+        let tableId = null
+        if(order.capacityTable){
+            let response = await fetch(`http://localhost:3003/api/table/bookTable?capacity=${order.capacityTable}`)
+            const status = response.status
+            response = await response.json()
+            if(status === 200){
+                
+                tableId = response.tableId
+                fetchAddBook(tableId)
+                fetchAddOrder(tableId)
+                return
+            }
+            else if(status === 403){
+                alert(response.message)
+                setOpen(false)
+                return
+            }
+        }
+        fetchAddOrder(tableId)
+        
+    }
+    // To fetch to orders
+    const fetchAddOrder = (tableId) => {
+        axios
+        .post('http://localhost:3003/api/order/AddOrder',
             {
-                userId : order.user.id, 
-                firstName : order.user.firstName, 
-                lastName : order.user.lastName, 
-                email : order.user.email, 
-                mobile : order.user.mobile, 
-                tableId : order.table.id
+                userId : user.id, 
+                tableId,
+                firstName : user.firstName, 
+                lastName : user.lastName, 
+                email : user.email, 
+                mobile : user.mobile,
+                method : order.method,
+                payment : order.payment,
+                totalPrice : order.totalPrice
+
             }
         )
         .then(res => {
             if(res.status === 201){
                 console.log(res.data.message)
-                const bookingId = res.data.bookingId
-                fetchCartItems(bookingId)
+                alert(res.data.message)
+                const orderId = res.data.orderId
+                fetchCartItems(orderId, false)
                 setOpen(false)
                 reset()
                 props.setDialogOrder(false)
             }
         })
     }
-    
-    const fetchCartItems = (bookingId) => {
-        console.log(props.cart[0]);
+    // same as order but for booking
+    const fetchAddBook = (tableId) => {
+        axios
+        .post('http://localhost:3003/api/book/AddBook',
+            {
+                userId : user.id, 
+                tableId,
+                firstName : user.firstName, 
+                lastName : user.lastName, 
+                email : user.email, 
+                mobile : user.mobile,
+                datetime : order.datetime
+
+            }
+        )
+        .then(res => {
+            if(res.status === 201){
+                console.log(res.data.message)
+                const bookingId = res.data.bookingId
+                fetchCartItems(bookingId, true)
+            }
+        })
+    }
+
+    const fetchCartItems = (id, isBooking) => {
+        const fetchURL = isBooking ? `http://localhost:3003/api/book/addBookItem?id=${id}`
+                : `http://localhost:3003/api/order/addOrderItem?id=${id}`
         props.cart.map(item => (
-            axios.post('http://localhost:3003/api/book/addBookItem',
+            axios.post(fetchURL,
                 {
-                    item,
-                    bookingId
+                    item
                 }
             )
             .then(res => {
@@ -98,9 +140,8 @@ const ConfirmOrderDialog = (props) => {
     
 
     const reset = () => {
-        setStep(-1)
-        setTable({code:null})
-        setOrder({user})
+        setStep(0)
+        setOrder({})
         props.setCart([])
     }
     
@@ -124,14 +165,19 @@ const ConfirmOrderDialog = (props) => {
             <CurrentStep 
                 step={step} 
                 cart={props.cart}
-                setTable={setTable}
-                table={table}
                 order={order}
                 setOrder={setOrder}
+                setDialogOrder={props.setDialogOrder}
             />
         </DialogContent>
         <DialogActions>
-        <div className="btn btn-outline-danger position-absolute" style={{left:'1rem'}} onClick={() => {setOrder({user})}}>Reset</div>
+        <div className="btn btn-outline-danger position-absolute" style={{left:'1rem'}} 
+                onClick={
+                            ()=> {
+                                props.setDialogOrder(false)
+                                reset()
+                            }
+                        }>Reset</div>
         <div className="btn btn-danger" onClick={handleCancel}>Cancel</div>
             {
                 step > 0 ? 
