@@ -22,9 +22,9 @@ export const nav_elements = [
             active:false
         },
         {
-            title:'Dish',
+            title:'Food',
             icon: <LunchDiningIcon/>,
-            link:'dish',
+            link:'food',
             active:false
         },
         {
@@ -36,7 +36,7 @@ export const nav_elements = [
         {
             title:'Orders',
             icon: <ShoppingCartIcon/>,
-            link:'booking',
+            link:'adminOrders',
             active:false
         },
         ]

@@ -1,42 +1,57 @@
-import { CircularProgress, Fab } from '@mui/material'
+import { Alert, CircularProgress, Fab, Snackbar } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
-import {Check, PanoramaSharp, Save} from '@mui/icons-material'
+import {Check, Save} from '@mui/icons-material'
 import { green } from '@mui/material/colors'
-import axios from 'axios'
 import { useEffect } from 'react'
 
 const UserActions = (props) => {
 
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
+    
 
     const handleSubmit = () => {
         setLoading(true)
-        const {id, role} = props.params.row
-        axios.post(`http://localhost:3003/api/user/updateUser?id=${id}`,
-        {
-            role
-        })
-        .then(response => {
-            if(response.status === 201){
+        const fetchURL = props.URL+props.id
+        fetch(fetchURL,{
+            "headers":{
+                "Content-Type":"application/json",
+                "authorization":"JWT "+window.localStorage.getItem("token")
+              },
+              "body": JSON.stringify(props.data),
+              "method":"post",
+            }
+        )
+        .then(prm => {
+            setLoading(false)
+            if(prm.status === 201){
                 setSuccess(true)
                 props.setRowId(null)
-                alert(response.data.message)
+                return prm.json()
             }
         })
-        setLoading(false)
+        .then(response => {
+            // alert(response.message)
+            props.setMsgSnackBar(response.message)
+            props.setOpen(true)
+        })
     }
     
     useEffect(() => {
-        if(props.rowId === props.params.id && success){
+        if(props.rowId === props.id && success){
             setSuccess(false)
         }
         console.log("hello");
     },[props.rowId])
 
+
+    
+
   return (
+    <div >
     <Box
+
     sx={{
         m:1,
         position:'relative'
@@ -65,7 +80,7 @@ const UserActions = (props) => {
                     bgcolor: green[500],
                     '&:hover':{bgcolor: green[700]}
                 }}
-                disabled={props.params.id !== props.rowId || loading}
+                disabled={props.id !== props.rowId || loading}
                 onClick={handleSubmit}
                 >
                     <Save />
@@ -87,6 +102,7 @@ const UserActions = (props) => {
         }
 
     </Box>
+    </div>
   )
 }
 

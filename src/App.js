@@ -5,7 +5,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import Main from './Pages/Dashboard/Customer/Main/Main';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Orders from './Pages/Dashboard/Customer/Orders/Orders';
@@ -14,7 +14,7 @@ import AdminMain from './Pages/Dashboard/Admin/AdminMain';
 import SharedLayout from './Pages/Dashboard/Admin/SharedLayout/SharedLayout';
 import Users from './Pages/Dashboard/Admin/Content/Users';
 import Menu from './Pages/Dashboard/Admin/Content/Menu';
-import Dish from './Pages/Dashboard/Admin/Content/Dish';
+import Food from './Pages/Dashboard/Admin/Content/Food';
 import Booking from './Pages/Dashboard/Admin/Content/Booking/Booking';
 
 
@@ -45,8 +45,9 @@ function App() {
                 <Route index element={<AdminMain/>}/>
                 <Route path='users' element={<Users/>}/>
                 <Route path='menu' element={<Menu/>}/>
-                <Route path='dish' element={<Dish/>}/>
+                <Route path='food' element={<Food/>}/>
                 <Route path='booking' element={<Booking/>}/>
+                <Route path='adminOrders' element={<Booking/>}/>
               </Route> 
               <Route path='/customerDashboard'>
                 <Route index element={

@@ -1,67 +1,49 @@
-import { Backdrop, CircularProgress, Snackbar } from '@mui/material';
+import { AppBar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import MuiAlert from '@mui/material/Alert';
+import ColumnAction from './ColumnAction'
+import SearchIcon from '@mui/icons-material/Search';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { useMemo } from 'react';
 
 const Menu = () => {
 
   const [menu, setMenu] = useState([])
   const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(false)
-  const [open, setOpen] = React.useState(false);
-  // const [value, setValue] = useState(null)
-  
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    console.log(updatedRow);
+  const [open, setOpen] = useState(false);
+  const [rowId, setRowId] = useState(null)
+  const [msgSnackBar, setMsgSnackBar] = useState('')
+ 
 
-    setLoading(true)
-    fetch(`http://localhost:3003/api/menu/updateMenu?id=${updatedRow.id}`,{
-      "headers":{
-        "Content-Type":"application/json",
-        "authorization":"JWT "+window.localStorage.getItem("token")
-      },
-      "body": JSON.stringify(
-        {
-          title: updatedRow.title,
-          summary: updatedRow.summary,
-          content: updatedRow.content
-        }
-      ),
-      "method":"post",
-    }
-    )
-    .then(prm => {
-      setLoading(false)
-      if(prm.status === 201)
-        return prm.json()
-      else if(prm.status === 401)
-        alert(prm.statusText)
-      else
-        alert(prm.statusText)
-      
-    })
-    .then(response => {
-      setOpen(true);
-    })
-    // axios
-    // .post(`http://localhost:3003/api/menu/updateMenu?id=${updatedRow.id}`,
-    // {
-    //   title: updatedRow.title,
-    //   summary: updatedRow.summary,
-    //   content: updatedRow.content
-    // }
-    // )
-    // .then(response => {
-    //   if(response.status === 201){
-    //     alert(response.data.message)
-    //   }
-    // })
-
-  return updatedRow
-  };
-
+  const columns = useMemo(() => [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'userId', headerName: 'User ID', width: 70 },
+    { field: 'title', headerName: 'Title', width: 100, editable: true },
+    { field: 'summary', headerName: 'Summary', width: 150, editable: true },
+    { field: 'type', headerName: 'Type', width: 130, editable: true },
+    { field: 'content', headerName: 'Content', width: 170, editable: true },
+    { field: 'actions', headerName: 'Actions', width: 170, editable: true, 
+      renderCell:params => 
+        <ColumnAction 
+          id={params.row.id}
+          data={
+            {title:params.row.title,
+            summary:params.row.summary,
+            content:params.row.content,
+            type:params.row.type
+          }
+          }
+          URL={'http://localhost:3003/api/menu/updateMenu?id='}
+          rowId={rowId}
+          setRowId={setRowId}
+          setMsgSnackBar={setMsgSnackBar}
+          setOpen={setOpen}
+          />
+    },
+  ],[rowId])
 
   console.log(menu)
   useEffect(() => {
@@ -82,37 +64,78 @@ const Menu = () => {
 
     setOpen(false);
   };
+  
 
   return (
     <div>
-      <Snackbar 
-        open={open} 
-        autoHideDuration={1000} 
-        onClose={handleClose}
-        anchorOrigin={{ vertical:'top', horizontal:'center' }}
-        >
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Menu Updated
-        </Alert>
-      </Snackbar>
+      
       <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={loading}
           >
           <CircularProgress color="inherit" />
-        </Backdrop>
-      <div style={{ height: 400, width: '100%' }}>
-          <DataGrid
-            experimentalFeatures={{ newEditingApi: true }}
-            rows={menu}
-            columns={columns}
-            processRowUpdate={processRowUpdate}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            onRowClick={()=>console.log('clicked')}
-          />
-        </div>
+      </Backdrop>
+      <Snackbar 
+        open={open} 
+        autoHideDuration={2000} 
+        onClose={handleClose}
+        anchorOrigin={{ vertical:'top', horizontal:'center' }}
+        >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {msgSnackBar}
+        </Alert>
+      </Snackbar>
+      <Paper sx={{ Width: 940, margin: 'auto', overflow: 'hidden' }}>
+        <AppBar
+          position="static"
+          color="default"
+          elevation={0}
+          sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}
+          >
+          <Toolbar>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>
+                <SearchIcon color="inherit" sx={{ display: 'block' }} />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  fullWidth
+                  placeholder="Search for menu"
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: { fontSize: 'default' },
+                  }}
+                  variant="standard"
+                />
+              </Grid>
+              <Grid item>
+                <Button variant="contained" sx={{ mr: 1 }} >
+                  Add Menu
+                </Button>
+                <Tooltip title="Reload">
+                  <IconButton>
+                    <RefreshIcon color="inherit" sx={{ display: 'block' }} onClick={() => setRefresh(!refresh)}/>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+        <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+              // experimentalFeatures={{ newEditingApi: true }}
+              rows={menu}
+              columns={columns}
+              // processRowUpdate={processRowUpdate}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              // checkboxSelection
+              onCellEditCommit={params => setRowId(params.id)}
+            />
+          </div>
+        </Typography>
+      </Paper>
 
     </div>
   )
@@ -120,14 +143,7 @@ const Menu = () => {
 
 export default Menu
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'userId', headerName: 'User ID', width: 70 },
-  { field: 'title', headerName: 'Title', width: 100, editable: true },
-  { field: 'summary', headerName: 'Summary', width: 110, editable: true },
-  { field: 'type', headerName: 'Type', width: 130, editable: true },
-  { field: 'content', headerName: 'Content', width: 170, editable: true }
-];
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

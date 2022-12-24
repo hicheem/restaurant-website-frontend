@@ -1,4 +1,4 @@
-import { AppBar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
+import { Alert, AppBar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { DataGrid } from '@mui/x-data-grid';
@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import DialogAddUser from './DialogAddUser';
-import UserActions from './UserActions';
+import ColumnAction from './ColumnAction';
 import { useMemo } from 'react';
 
 
@@ -20,7 +20,8 @@ const Users = () => {
   const [users, setUsers] = useState([])
   const [refresh, setRefrech] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  const [msgSnackBar, setMsgSnackBar] = useState('')
   const [rowId, setRowId] = useState(null)
 
   useEffect(() => {
@@ -50,17 +51,42 @@ const Users = () => {
         valueGetter: (params) =>
           `${params.row.firstName || ''} ${params.row.lastName || ''}`,
       },
-      {field : 'actions', headerName: 'Actions', type:'actions', renderCell: params => <UserActions params={params} rowId={rowId} setRowId={setRowId}/>}
+      {field : 'actions', headerName: 'Actions', type:'actions', 
+        renderCell: params => 
+          <ColumnAction 
+            URL={'http://localhost:3003/api/user/updateUser?id='}
+            data={{role:params.row.role}} 
+            id={params.row.id} 
+            setMsgSnackBar={setMsgSnackBar}
+            setOpen={setOpen}
+            rowId={rowId} 
+            setRowId={setRowId}/>}
     ]
   ,[rowId])
 
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
+    setOpen(false);
+  };
 
 
   return (
     <div >
       <DialogAddUser open={openDialog} setOpen={setOpenDialog}/>
+      <Snackbar 
+        open={open} 
+        autoHideDuration={2000} 
+        onClose={handleClose}
+        anchorOrigin={{ vertical:'top', horizontal:'center' }}
+        >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {msgSnackBar}
+        </Alert>
+      </Snackbar>
       <Paper sx={{ Width: 940, margin: 'auto', overflow: 'hidden' }}>
       <AppBar
         position="static"
