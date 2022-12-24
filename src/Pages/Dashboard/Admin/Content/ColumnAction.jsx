@@ -1,8 +1,8 @@
-import { Alert, CircularProgress, Fab, Snackbar } from '@mui/material'
+import { CircularProgress, Fab, Tooltip} from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
-import {Check, Save} from '@mui/icons-material'
-import { green } from '@mui/material/colors'
+import {Check, Delete, Save} from '@mui/icons-material'
+import { green, red } from '@mui/material/colors'
 import { useEffect } from 'react'
 
 const UserActions = (props) => {
@@ -10,17 +10,17 @@ const UserActions = (props) => {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     
-
+    
     const handleSubmit = () => {
         setLoading(true)
-        const fetchURL = props.URL+props.id
+        const fetchURL = props.submitURL+props.id
         fetch(fetchURL,{
             "headers":{
                 "Content-Type":"application/json",
                 "authorization":"JWT "+window.localStorage.getItem("token")
               },
               "body": JSON.stringify(props.data),
-              "method":"post",
+              "method":"put",
             }
         )
         .then(prm => {
@@ -32,12 +32,39 @@ const UserActions = (props) => {
             }
         })
         .then(response => {
-            // alert(response.message)
             props.setMsgSnackBar(response.message)
             props.setOpen(true)
         })
     }
     
+
+    const handleDelete = () => {
+        const confirm = window.confirm("Confirmer de supprimer ?")
+        if(confirm){
+            const fetchURL = props.deleteURL+props.id
+            fetch(fetchURL,{
+                "headers":{
+                    "Content-Type":"application/json",
+                    "authorization":"JWT "+window.localStorage.getItem("token")
+                  },
+                  "method":"delete",
+                }
+            ).then(prm => {
+                props.setSelectedRowId(null)
+                if(prm.status === 204){
+                    props.setMsgSnackBar("Deleted")
+                    props.setOpen(true)
+                    props.setRefresh(!props.refresh)
+                    return prm.json()
+                }
+            })
+            .then(response => {
+                props.setMsgSnackBar(response.message)
+                props.setOpen(true)
+            })
+        }
+    }
+
     useEffect(() => {
         if(props.rowId === props.id && success){
             setSuccess(false)
@@ -46,7 +73,6 @@ const UserActions = (props) => {
     },[props.rowId])
 
 
-    
 
   return (
     <div >
@@ -100,6 +126,20 @@ const UserActions = (props) => {
                 }}
                 />
         }
+            <Fab 
+            color='primary'
+            sx={{
+                marginLeft:'0.5rem',
+                width:40,
+                height:40,
+                bgcolor: red[400],
+                '&:hover':{bgcolor: red[600]}}}
+            disabled={props.id !== props.selectedRowId}
+            onClick={handleDelete}>
+                <Tooltip title="Delete">
+                    <Delete/>
+                </Tooltip>
+            </Fab>
 
     </Box>
     </div>

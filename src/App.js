@@ -12,9 +12,9 @@ import Orders from './Pages/Dashboard/Customer/Orders/Orders';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AdminMain from './Pages/Dashboard/Admin/AdminMain';
 import SharedLayout from './Pages/Dashboard/Admin/SharedLayout/SharedLayout';
-import Users from './Pages/Dashboard/Admin/Content/Users';
-import Menu from './Pages/Dashboard/Admin/Content/Menu';
-import Food from './Pages/Dashboard/Admin/Content/Food';
+import Users from './Pages/Dashboard/Admin/Content/Users/Users';
+import Menu from './Pages/Dashboard/Admin/Content/Menu/Menu';
+import Food from './Pages/Dashboard/Admin/Content/Food/Food';
 import Booking from './Pages/Dashboard/Admin/Content/Booking/Booking';
 
 

@@ -22,7 +22,7 @@ const Navbar = (props) => {
   
 
   return (
-      <AppBar position='static' color='primary' sx={{
+      <AppBar position='static' color='info' sx={{
           width:'100%',
           transition:'0.2s',
           height:'4rem',

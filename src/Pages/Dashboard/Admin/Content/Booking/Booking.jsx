@@ -1,4 +1,4 @@
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Backdrop, Chip, CircularProgress } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
@@ -46,7 +46,13 @@ const Booking = () => {
       // { field: 'mobile', headerName: 'Mobile', width: 100 },
       { field: 'email', headerName: 'Email', width: 150 },
       { field: 'datetime', headerName: 'Date Time', width: 180, renderCell: params => <Moment format="DD-MM-YYYY HH:mm">{params.row.datetime}</Moment> },
-      { field: 'status', headerName: 'Status', width: 100, editable: true },
+      { field: 'status', headerName: 'Status', width: 100, editable: true, renderCell: params => 
+          <Chip 
+              sx={{width:'5rem'}}
+              size="small" 
+              label={params.row.status === 0 ? 'New' : params.row.status ===  1 ? 'Active' : 'Complete'}
+              color={params.row.status === 0 ? 'primary' : params.row.status === 1 ? 'warning' : 'success'}
+          /> },
       // { field: 'content', headerName: 'Content', width: 170, editable: true },
       {field : 'actions', headerName: 'Actions',width: 150, type:'actions', renderCell: params => <BookingActions params={params} setOpen={setOpen}  setBookingId={setBookingId}/>}
     ]
@@ -79,7 +85,6 @@ const Booking = () => {
             columns={bookingColumns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            onRowClick={()=>console.log('clicked')}
           />
         </div>
     </div>

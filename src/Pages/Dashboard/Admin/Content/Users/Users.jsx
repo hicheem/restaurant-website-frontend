@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import DialogAddUser from './DialogAddUser';
-import ColumnAction from './ColumnAction';
+import ColumnAction from '../ColumnAction';
 import { useMemo } from 'react';
 
 
@@ -18,11 +18,12 @@ const Users = () => {
   
   const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState([])
-  const [refresh, setRefrech] = useState(false)
+  const [refresh, setRefresh] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
   const [open, setOpen] = useState(false);
   const [msgSnackBar, setMsgSnackBar] = useState('')
   const [rowId, setRowId] = useState(null)
+  const [selectedRowId, setSelectedRowId] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -38,11 +39,6 @@ const Users = () => {
   const columns = useMemo(()=> 
     [
       { field: 'id', headerName: 'ID', width: 70 },
-      { field: 'firstName', headerName: 'First name', width: 100 },
-      { field: 'lastName', headerName: 'Last name', width: 110 },
-      { field: 'mobile', headerName: 'Mobile', width: 130 },
-      { field: 'email', headerName: 'Email', width: 170 },
-      { field: 'role', headerName: 'Role', width: 130, type:'singleSelect', valueOptions:['admin', 'chef', 'agent', 'customer'], editable:true},
       { field: 'fullName', 
         headerName: 'Full name',
         description: 'This column has a value getter and is not sortable.',
@@ -51,18 +47,29 @@ const Users = () => {
         valueGetter: (params) =>
           `${params.row.firstName || ''} ${params.row.lastName || ''}`,
       },
-      {field : 'actions', headerName: 'Actions', type:'actions', 
+      { field: 'firstName', headerName: 'First name', width: 100, hide:true },
+      { field: 'lastName', headerName: 'Last name', width: 110, hide:true },
+      { field: 'mobile', headerName: 'Mobile', width: 130, sortable:false },
+      { field: 'email', headerName: 'Email', width: 170 },
+      { field: 'role', headerName: 'Role', width: 130, type:'singleSelect', valueOptions:['admin', 'chef', 'agent', 'customer'], editable:true},
+      {field : 'actions', headerName: 'Actions', type:'actions', sortable:false, width:170,
         renderCell: params => 
           <ColumnAction 
-            URL={'http://localhost:3003/api/user/updateUser?id='}
+            submitURL={'http://localhost:3003/api/user/updateUser?id='}
+            deleteURL={'http://localhost:3003/api/user/deleteUser?id='}
             data={{role:params.row.role}} 
             id={params.row.id} 
             setMsgSnackBar={setMsgSnackBar}
             setOpen={setOpen}
             rowId={rowId} 
-            setRowId={setRowId}/>}
+            setRowId={setRowId}
+            selectedRowId={selectedRowId}
+            setSelectedRowId={setSelectedRowId}
+            setRefresh={setRefresh}
+            refresh={refresh}
+            />}
     ]
-  ,[rowId])
+  ,[rowId, selectedRowId])
 
 
   const handleClose = (event, reason) => {
@@ -116,7 +123,7 @@ const Users = () => {
               </Button>
               <Tooltip title="Reload">
                 <IconButton>
-                  <RefreshIcon color="inherit" sx={{ display: 'block' }} onClick={() => setRefrech(!refresh)}/>
+                  <RefreshIcon color="inherit" sx={{ display: 'block' }} onClick={() => setRefresh(!refresh)}/>
                 </IconButton>
               </Tooltip>
             </Grid>
@@ -138,6 +145,8 @@ const Users = () => {
             rowsPerPageOptions={[5]}
             checkboxSelection
             onCellEditCommit={params => setRowId(params.id)}
+            onRowClick={params => setSelectedRowId(params.id)}
+            onColumnHeaderClick={() => setSelectedRowId(null)}
             // disableSelectionOnClick
           />
         </div>

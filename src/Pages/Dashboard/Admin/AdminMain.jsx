@@ -1,4 +1,4 @@
-import { Backdrop, CircularProgress, Paper, Stack } from '@mui/material'
+import { Backdrop, Chip, CircularProgress, Paper, Stack } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import tableIcon from '../../../Assets/tableIcon.png'
@@ -84,12 +84,10 @@ const AdminMain = () => {
           experimentalFeatures={{ newEditingApi: true }}
           rows={tables}
           columns={tablesColumns}
-          title='Tables'
           // processRowUpdate={processRowUpdate}
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
-          onRowClick={()=>console.log('clicked')}
         />
       </div>
       
@@ -107,7 +105,13 @@ const tablesColumns = [
     field: 'status', 
     headerName: 'Status', 
     width: 100, editable: true, 
-    renderCell: params => params.row.status === 0 ? 'Free' : params.row.status  === 1 ?'Reserved' : 'Active',
+    renderCell: params => 
+      <Chip
+        sx={{width:'5rem'}} 
+        size="small" 
+        label={params.row.status === 0 ? 'Free' : params.row.status  === 1 ?'Reserved' : 'Active'}
+        color={params.row.status === 0 ? 'success' : params.row.status  === 1 ?'warning' : 'error'}
+      />,
     type:'singleSelect', valueOptions:['Free', 'Reserved', 'Active']
   },
 

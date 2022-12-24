@@ -3,10 +3,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import MuiAlert from '@mui/material/Alert';
-import ColumnAction from './ColumnAction'
+import ColumnAction from '../ColumnAction'
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useMemo } from 'react';
+import DialogMenu from './DialogMenu';
 
 const Menu = () => {
 
@@ -15,17 +16,19 @@ const Menu = () => {
   const [refresh, setRefresh] = useState(false)
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null)
+  const [selectedRowId, setSelectedRowId] = useState(null)
   const [msgSnackBar, setMsgSnackBar] = useState('')
+  const [openDialog, setOpenDialog] = useState(false)
  
 
   const columns = useMemo(() => [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'userId', headerName: 'User ID', width: 70 },
+    { field: 'userId', headerName: 'User ID', width: 70, sortable:false },
     { field: 'title', headerName: 'Title', width: 100, editable: true },
-    { field: 'summary', headerName: 'Summary', width: 150, editable: true },
+    { field: 'summary', headerName: 'Summary', width: 150, editable: true, sortable:false },
     { field: 'type', headerName: 'Type', width: 130, editable: true },
-    { field: 'content', headerName: 'Content', width: 170, editable: true },
-    { field: 'actions', headerName: 'Actions', width: 170, editable: true, 
+    { field: 'content', headerName: 'Content', width: 170, editable: true, sortable:false },
+    { field: 'actions', headerName: 'Actions', width: 170, editable: true, sortable:false ,
       renderCell:params => 
         <ColumnAction 
           id={params.row.id}
@@ -36,14 +39,19 @@ const Menu = () => {
             type:params.row.type
           }
           }
-          URL={'http://localhost:3003/api/menu/updateMenu?id='}
+          submitURL={'http://localhost:3003/api/menu/updateMenu?id='}
+          deleteURL={'http://localhost:3003/api/menu/deleteMenu?id='}
           rowId={rowId}
           setRowId={setRowId}
           setMsgSnackBar={setMsgSnackBar}
           setOpen={setOpen}
+          selectedRowId={selectedRowId}
+          setSelectedRowId={setSelectedRowId}
+          setRefresh={setRefresh}
+          refresh={refresh}
           />
     },
-  ],[rowId])
+  ],[rowId, selectedRowId])
 
   console.log(menu)
   useEffect(() => {
@@ -68,7 +76,7 @@ const Menu = () => {
 
   return (
     <div>
-      
+      <DialogMenu open={openDialog} setOpen={setOpenDialog}/>
       <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={loading}
@@ -109,7 +117,7 @@ const Menu = () => {
                 />
               </Grid>
               <Grid item>
-                <Button variant="contained" sx={{ mr: 1 }} >
+                <Button variant="contained" sx={{ mr: 1 }} onClick={() => setOpenDialog(true)}>
                   Add Menu
                 </Button>
                 <Tooltip title="Reload">
@@ -132,6 +140,8 @@ const Menu = () => {
               rowsPerPageOptions={[5]}
               // checkboxSelection
               onCellEditCommit={params => setRowId(params.id)}
+              onRowClick={params => setSelectedRowId(params.id)}
+              onColumnHeaderClick={() => setSelectedRowId(null)}
             />
           </div>
         </Typography>
