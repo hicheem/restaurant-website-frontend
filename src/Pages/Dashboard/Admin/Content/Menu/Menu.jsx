@@ -1,6 +1,6 @@
 import { AppBar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
+import {axiosBase} from '../../../../../api';
 import React, { useEffect, useState } from 'react'
 import MuiAlert from '@mui/material/Alert';
 import ColumnAction from '../ColumnAction'
@@ -39,8 +39,8 @@ const Menu = () => {
             type:params.row.type
           }
           }
-          submitURL={'http://localhost:3003/api/menu/updateMenu?id='}
-          deleteURL={'http://localhost:3003/api/menu/deleteMenu?id='}
+          submitURL={'api/menu/updateMenu?id='}
+          deleteURL={'api/menu/deleteMenu?id='}
           rowId={rowId}
           setRowId={setRowId}
           setMsgSnackBar={setMsgSnackBar}
@@ -56,7 +56,7 @@ const Menu = () => {
   console.log(menu)
   useEffect(() => {
       setLoading(true)
-      axios('http://localhost:3003/api/menu/getMenus')
+      axiosBase('api/menu/getMenus')
       .then(response => {
         console.log(response.data)
         if(response.status === 200)

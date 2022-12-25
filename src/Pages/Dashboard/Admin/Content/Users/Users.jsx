@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import React from 'react'
 import { useEffect } from 'react';
-import axios from 'axios';
+import {axiosBase} from '../../../../../api';
 import { useState } from 'react';
 import DialogAddUser from './DialogAddUser';
 import ColumnAction from '../ColumnAction';
@@ -27,8 +27,8 @@ const Users = () => {
 
   useEffect(() => {
     setLoading(true)
-    axios
-    .get('http://localhost:3003/api/user/users')
+    axiosBase
+    .get('api/user/users')
     .then(response => {
       setUsers(response.data.users)
       setLoading(false)
@@ -55,8 +55,8 @@ const Users = () => {
       {field : 'actions', headerName: 'Actions', type:'actions', sortable:false, width:170,
         renderCell: params => 
           <ColumnAction 
-            submitURL={'http://localhost:3003/api/user/updateUser?id='}
-            deleteURL={'http://localhost:3003/api/user/deleteUser?id='}
+            submitURL={'api/user/updateUser?id='}
+            deleteURL={'api/user/deleteUser?id='}
             data={{role:params.row.role}} 
             id={params.row.id} 
             setMsgSnackBar={setMsgSnackBar}

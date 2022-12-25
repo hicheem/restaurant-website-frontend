@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React, { useState } from 'react'
-
+import {fetchBase} from '../../../../../api';
 
 
 
@@ -14,7 +14,7 @@ const DialogAddUser = (props) => {
         let confirm = window.confirm("Veuillez vous ajouter le user de role ?")
         if(confirm){
             setLoading(true)
-            fetch('http://localhost:3003/api/user/AddUser',{
+            fetch(fetchBase + 'api/user/AddUser',{
                 
                 "headers":{
                     "Content-Type":"application/json",

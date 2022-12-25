@@ -1,5 +1,5 @@
 import { Backdrop, Chip, CircularProgress, Paper, Stack } from '@mui/material'
-import axios from 'axios'
+import {axiosBase} from '../../../api'
 import React, { useState } from 'react'
 import tableIcon from '../../../Assets/tableIcon.png'
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
@@ -33,7 +33,7 @@ const AdminMain = () => {
   ]
 
   const getTables = () => {
-    axios('http://localhost:3003/api/table/getTables')
+    axiosBase('api/table/getTables')
     .then(response => {
         if(response.status === 200)
         {

@@ -7,7 +7,7 @@ import TextField from '@mui/joy/TextField';
 import Button from '@mui/joy/Button';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import Axios from 'axios';
+import {axiosBase} from '../../api';
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Footer from '../../Components/Footer/Footer';
@@ -27,7 +27,7 @@ const Login = (props) => {
     const loginHandler = () => {
             console.log('clicked');
             
-            Axios(`http://localhost:3003/api/user/login?email=${email}&password=${password}`)
+            axiosBase(`api/user/login?email=${email}&password=${password}`)
             .then(response => {
             if(!response.data.email){
                 console.log(response.data)

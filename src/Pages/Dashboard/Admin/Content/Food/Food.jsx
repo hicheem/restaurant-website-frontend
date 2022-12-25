@@ -6,7 +6,8 @@ import ColumnAction from '../ColumnAction'
 import React, { useMemo } from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
+import {axiosBase} from '../../../../../api';
+import {fetchBase} from '../../../../../api';
 
 const Food = () => {
 
@@ -28,14 +29,14 @@ const Food = () => {
   },[refresh])
 
   const getMenus = () => {
-    axios('http://localhost:3003/api/menu/getMenus')
+    axiosBase('api/menu/getMenus')
     .then(response => {
       setMenu(response.data.menu)
     })
   }
 
   const getItems = () => {
-    fetch('http://localhost:3003/api/menu/getItemsAdmin',{
+    fetch(fetchBase + 'api/menu/getItemsAdmin',{
       "headers":{
         "Content-Type":"application/json",
         "authorization":"JWT "+window.localStorage.getItem("token")
@@ -73,8 +74,8 @@ const Food = () => {
             recipe:params.row.recipe            
           }
         }
-        submitURL={'http://localhost:3003/api/menu/updateItem?id='}
-        deleteURL={'http://localhost:3003/api/menu/deleteItem?id='}
+        submitURL={'api/menu/updateItem?id='}
+        deleteURL={'api/menu/deleteItem?id='}
         rowId={rowId}
         setRowId={setRowId}
         setMsgSnackBar={setMsgSnackBar}

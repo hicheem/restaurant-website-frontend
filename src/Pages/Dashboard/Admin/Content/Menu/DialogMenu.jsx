@@ -1,6 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
+import {fetchBase} from '../../../../../api'
 
 const DialogMenu = (props) => {
 
@@ -11,7 +12,7 @@ const DialogMenu = (props) => {
 
     const handleSubmit = () => {
 
-        fetch(`http://localhost:3003/api/menu/addMenu?userId=${user.id}`,{
+        fetch(fetchBase + `api/menu/addMenu?userId=${user.id}`,{
                 
                 "headers":{
                     "Content-Type":"application/json",

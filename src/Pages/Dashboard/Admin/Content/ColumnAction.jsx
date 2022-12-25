@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import {Check, Delete, Save} from '@mui/icons-material'
 import { green, red } from '@mui/material/colors'
 import { useEffect } from 'react'
+import {fetchBase} from '../../../../api'
 
 const UserActions = (props) => {
 
@@ -15,7 +16,7 @@ const UserActions = (props) => {
         console.log(props.data);
         setLoading(true)
         const fetchURL = props.submitURL+props.id
-        fetch(fetchURL,{
+        fetch(fetchBase + fetchURL,{
             "headers":{
                 "Content-Type":"application/json",
                 "authorization":"JWT "+window.localStorage.getItem("token")
@@ -44,7 +45,7 @@ const UserActions = (props) => {
         const confirm = window.confirm("Confirmer de supprimer ?")
         if(confirm){
             const fetchURL = props.deleteURL+props.id
-            fetch(fetchURL,{
+            fetch(fetchBase + fetchURL,{
                 "headers":{
                     "Content-Type":"application/json",
                     "authorization":"JWT "+window.localStorage.getItem("token")

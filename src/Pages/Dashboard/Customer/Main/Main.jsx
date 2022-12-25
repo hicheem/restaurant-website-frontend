@@ -1,5 +1,5 @@
 import { Backdrop, CircularProgress, Divider} from '@mui/material';
-import axios from 'axios';
+import {axiosBase} from '../../../../api';
 
 import React, { useEffect } from 'react'
 import { useState } from 'react';
@@ -30,7 +30,7 @@ const Main = () => {
   
   
   const getMenu = () => {
-    axios('http://localhost:3003/api/menu/menusWithItems')
+    axiosBase('api/menu/menusWithItems')
     .then(res => {
       setMenus(res.data.menus)
       setItems(res.data.items)

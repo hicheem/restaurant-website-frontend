@@ -9,7 +9,7 @@ import './Orders.css'
 import TableComp from '../../../../Components/TablesComp';
 import { useEffect } from 'react';
 import { UserContext } from '../../../../App';
-import axios from 'axios';
+import {axiosBase} from '../../../../api';
 import { useState } from 'react';
 
 
@@ -25,8 +25,8 @@ const Orders = () => {
   },[])
   
   const getBooking = () => {
-    axios
-      .get(`http://localhost:3003/api/book/getBooking?userId=${user.id}`)
+    axiosBase
+      .get(`api/book/getBooking?userId=${user.id}`)
       .then(response => {
         if(response.status === 200){
           setBooking(response.data.booking)

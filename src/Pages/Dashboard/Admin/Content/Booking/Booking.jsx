@@ -1,6 +1,6 @@
 import { Alert, AppBar, Avatar, Backdrop, Button, Chip, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import {axiosBase} from '../../../../../api';
 import { DataGrid } from '@mui/x-data-grid';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -29,7 +29,7 @@ const Booking = () => {
   
   
   const getBooking = () => {
-    axios('http://localhost:3003/api/book/getAllBooking')
+    axiosBase('api/book/getAllBooking')
     .then(response => {
         if(response.status === 200)
         {

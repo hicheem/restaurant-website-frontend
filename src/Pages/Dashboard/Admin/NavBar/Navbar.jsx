@@ -1,5 +1,5 @@
 import { AppBar, IconButton, Toolbar } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';

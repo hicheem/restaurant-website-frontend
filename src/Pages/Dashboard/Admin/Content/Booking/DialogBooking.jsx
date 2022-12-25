@@ -1,8 +1,8 @@
-import { AppBar, Avatar, Backdrop, Button, CircularProgress, Dialog, Divider, IconButton, List, ListItem, ListItemText, Paper, Slide, Toolbar, Typography } from '@mui/material'
+import { AppBar, Avatar, Backdrop, CircularProgress, Dialog, IconButton, Paper, Slide, Toolbar, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useMemo, useState } from 'react'
 import { useEffect } from 'react';
-import axios from 'axios';
+import {axiosBase} from '../../../../../api';
 import { DataGrid } from '@mui/x-data-grid';
 import Moment from 'react-moment';
 
@@ -19,7 +19,7 @@ const DialogBooking = (props) => {
     console.log(props.bookingId)
     useEffect(() => {
         // setLoading(true)
-        axios(`http://localhost:3003/api/book/getBookingDetails?bookingId=${props.bookingId}`)
+        axiosBase(`api/book/getBookingDetails?bookingId=${props.bookingId}`)
         .then(response => {
           setLoading(false)
           if(response.status === 200){

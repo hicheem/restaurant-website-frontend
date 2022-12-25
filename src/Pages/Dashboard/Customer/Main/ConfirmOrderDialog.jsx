@@ -1,10 +1,12 @@
 import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
-import axios from 'axios';
+import {axiosBase} from '../../../../api';
+import {fetchBase} from '../../../../api';
 import React, { useState } from 'react'
 import FinalStep from '../Steps/FinalStep';
 import StepOne from '../Steps/StepOne';
 import StepThree from '../Steps/StepThree';
 import StepTwo from '../Steps/StepTwo';
+
 
 const CurrentStep = (props) =>{
     
@@ -51,7 +53,7 @@ const ConfirmOrderDialog = (props) => {
         setOpen(true)
         let tableId = null
         if(order.capacityTable){
-            let response = await fetch(`http://localhost:3003/api/table/bookTable?capacity=${order.capacityTable}`)
+            let response = await fetch(fetchBase + `api/table/bookTable?capacity=${order.capacityTable}`)
             const status = response.status
             response = await response.json()
             if(status === 200){
@@ -72,8 +74,8 @@ const ConfirmOrderDialog = (props) => {
     }
     // To fetch to orders
     const fetchAddOrder = (tableId) => {
-        axios
-        .post('http://localhost:3003/api/order/AddOrder',
+        axiosBase
+        .post('api/order/AddOrder',
             {
                 userId : user.id, 
                 tableId,
@@ -101,8 +103,8 @@ const ConfirmOrderDialog = (props) => {
     }
     // same as order but for booking
     const fetchAddBook = (tableId) => {
-        axios
-        .post('http://localhost:3003/api/book/AddBook',
+        axiosBase
+        .post('api/book/AddBook',
             {
                 userId : user.id, 
                 tableId,
@@ -124,10 +126,10 @@ const ConfirmOrderDialog = (props) => {
     }
 
     const fetchCartItems = (id, isBooking) => {
-        const fetchURL = isBooking ? `http://localhost:3003/api/book/addBookItem?id=${id}`
-                : `http://localhost:3003/api/order/addOrderItem?id=${id}`
+        const fetchURL = isBooking ? `api/book/addBookItem?id=${id}`
+                : `api/order/addOrderItem?id=${id}`
         props.cart.map(item => (
-            axios.post(fetchURL,
+            axiosBase.post(fetchURL,
                 {
                     item
                 }

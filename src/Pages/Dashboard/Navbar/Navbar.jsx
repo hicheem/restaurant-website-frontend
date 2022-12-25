@@ -1,6 +1,5 @@
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
@@ -8,8 +7,6 @@ import AccountMenu from './AccountMenu'
 import './Navbar.css'
 import Searchcomp from './Searchcomp';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import axios from 'axios';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {

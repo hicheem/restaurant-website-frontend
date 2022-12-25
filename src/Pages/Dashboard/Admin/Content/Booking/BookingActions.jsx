@@ -2,6 +2,7 @@ import { Preview, Edit, Delete } from '@mui/icons-material'
 import { Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
+import {fetchBase} from '../../../../../api'
 
 const BookingActions = (props) => {
 
@@ -16,7 +17,7 @@ const BookingActions = (props) => {
 
     const handleUpdateStatus = () => {
         setLoading(true)
-        fetch(`http://localhost:3003/api/book/updateBookStatus?id=${props.params.row.id}`,{
+        fetch(fetchBase + `api/book/updateBookStatus?id=${props.params.row.id}`,{
             "headers":{
                 "Content-Type":"application/json",
                 "authorization":"JWT "+window.localStorage.getItem("token")
