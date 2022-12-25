@@ -25,7 +25,7 @@ const Food = () => {
     getItems()
     getMenus()
     
-  },[])
+  },[refresh])
 
   const getMenus = () => {
     axios('http://localhost:3003/api/menu/getMenus')
@@ -60,21 +60,21 @@ const Food = () => {
     { field: 'price', headerName: 'Price', width: 80, editable: true, renderCell:params=> params.row.price + ' DA' },
     { field: 'quantity', headerName: 'Quantity', width: 80, editable: true },
     { field: 'recipe', headerName: 'Recipe', width: 170 , sortable:false, editable: true, renderCell:params=> <Tooltip title={params.row.recipe}><div className='fw-light'>{params.row.recipe}</div></Tooltip> },
-    { field: 'actions', headerName: 'Actions', width: 170 , sortable:false, editable: true, renderCell:params => 
+    { field: 'actions', headerName: 'Actions', width: 170 , sortable:false,  renderCell:params => 
       <ColumnAction
         id={params.row.id}
         data={
           {
-            title:params.row.title,
-            menu_title:params.row.menu_title,
+            item_title:params.row.item_title,
+            menuId: menu.filter(item => item.title === params.row.menu_title)[0].id,
             cooking:params.row.cooking,
             price:params.row.price,
             quantity:params.row.quantity,
             recipe:params.row.recipe            
           }
         }
-        submitURL={'http://localhost:3003/api/menu/updateMenu?id='}
-        deleteURL={'http://localhost:3003/api/menu/deleteMenu?id='}
+        submitURL={'http://localhost:3003/api/menu/updateItem?id='}
+        deleteURL={'http://localhost:3003/api/menu/deleteItem?id='}
         rowId={rowId}
         setRowId={setRowId}
         setMsgSnackBar={setMsgSnackBar}
@@ -112,7 +112,7 @@ const Food = () => {
         anchorOrigin={{ vertical:'top', horizontal:'center' }}
         >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          {msgSnackBar}
+          Food updated
         </Alert>
       </Snackbar>
       <Paper sx={{ Width: 940, margin: 'auto', overflow: 'hidden' }}>
@@ -144,7 +144,7 @@ const Food = () => {
                 </Button>
                 <Tooltip title="Reload">
                   <IconButton>
-                    <RefreshIcon color="inherit" sx={{ display: 'block' }} />
+                    <RefreshIcon color="inherit" sx={{ display: 'block' }} onClick={() => setRefresh(!refresh)}/>
                   </IconButton>
                 </Tooltip>
               </Grid>

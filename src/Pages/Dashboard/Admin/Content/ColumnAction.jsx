@@ -12,6 +12,7 @@ const UserActions = (props) => {
     
     
     const handleSubmit = () => {
+        console.log(props.data);
         setLoading(true)
         const fetchURL = props.submitURL+props.id
         fetch(fetchURL,{
@@ -25,6 +26,7 @@ const UserActions = (props) => {
         )
         .then(prm => {
             setLoading(false)
+            props.setOpen(true)
             if(prm.status === 201){
                 setSuccess(true)
                 props.setRowId(null)

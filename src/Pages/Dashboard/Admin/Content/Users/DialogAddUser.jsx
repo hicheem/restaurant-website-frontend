@@ -60,7 +60,7 @@ const DialogAddUser = (props) => {
             maxWidth="xs"
             open={props.open}
             >
-            <DialogTitle>Phone Ringtone</DialogTitle>
+            <DialogTitle>Add User</DialogTitle>
             <DialogContent dividers>
                 <form action="/">
                     <div className="mb-3 d-flex gap-3 border-secondary">
