@@ -2,6 +2,7 @@ import { Backdrop, Chip, CircularProgress, Paper, Stack } from '@mui/material'
 import {axiosBase} from '../../../api'
 import React, { useState } from 'react'
 import tableIcon from '../../../Assets/tableIcon.png'
+import bookingIcon from '../../../Assets/booking-58.png'
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
 import { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
@@ -90,7 +91,7 @@ const AdminMain = () => {
               <div className='d-flex flex-column align-items-center my-1'>
                 <div className='text-center my-1 fw-bold'>{item.title} Booking</div>
                 <div className='text-center text-success fw-bold fs-1'>{item.value}</div>
-                <img src={tableIcon} height='60' width='60' alt=''/>
+                <img src={bookingIcon} height='60' width='60' alt=''/>
               </div>
             </Paper>
             ))

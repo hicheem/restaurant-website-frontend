@@ -81,7 +81,7 @@ const ConfirmOrderDialog = (props) => {
         .post('api/order/AddOrder',
             {
                 userId : user.id, 
-                tableId: tableId === null ? 0 : tableId,
+                tableId: tableId === null ? 1 : tableId,
                 firstName : user.firstName, 
                 lastName : user.lastName, 
                 email : user.email, 
