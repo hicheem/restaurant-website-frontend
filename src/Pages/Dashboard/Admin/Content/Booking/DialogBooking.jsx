@@ -13,12 +13,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogBooking = (props) => {
 
-    const [bookingDetails, setBookingDetails] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    console.log(props.bookingId)
+  
+  
+  const [bookingDetails, setBookingDetails] = useState([])
+  const [loading, setLoading] = useState(false)
+  
     useEffect(() => {
-        // setLoading(true)
         axiosBase(`api/book/getBookingDetails?bookingId=${props.bookingId}`)
         .then(response => {
           setLoading(false)

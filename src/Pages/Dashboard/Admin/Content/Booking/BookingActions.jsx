@@ -15,8 +15,7 @@ const BookingActions = (props) => {
         props.setOpen(true)
     }
 
-    const handleUpdateStatus = () => {
-        setLoading(true)
+    const updateBook = () => {
         fetch(fetchBase + `api/book/updateBookStatus?id=${props.params.row.id}`,{
             "headers":{
                 "Content-Type":"application/json",
@@ -37,6 +36,31 @@ const BookingActions = (props) => {
             props.setOpenSnack(true)
             props.setRefresh(!props.refresh)
         })
+    }
+    const updateOrder = () => {
+        fetch(fetchBase + `api/order/updateOrderOBStatus?tableId=${props.params.row.tableId}`,{
+            "headers":{
+                "Content-Type":"application/json",
+                "authorization":"JWT "+window.localStorage.getItem("token")
+            },
+            "body": JSON.stringify({status:newStatus}),
+            "method":"put",
+        })
+        .then(prm => {
+            setLoading(false)
+            if(prm.status === 201){
+                return prm.json()
+            }
+        })
+        .then(res => {
+            return
+        })
+    }
+    const handleUpdateStatus = () => {
+        setLoading(true)
+        updateOrder()
+        updateBook()
+        
     }
   return (
     <Box>

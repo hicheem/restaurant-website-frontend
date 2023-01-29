@@ -29,7 +29,7 @@ const Home = () => {
                 </div>
             </div>
             <div className='home-about' id='about'>
-                <h1 className='py-5 text-xl-center'>hello my friends</h1>
+                <h1 className='py-5 text-xl-center'>Hello</h1>
             </div>
         </div>         
     </div>

@@ -25,12 +25,10 @@ const Login = (props) => {
     
 
     const loginHandler = () => {
-            console.log('clicked');
             
             axiosBase(`api/user/login?email=${email}&password=${password}`)
             .then(response => {
             if(!response.data.email){
-                console.log(response.data)
                 setConfirmUser({email:false, password:true});
             }
             else if(!response.data.password){
@@ -52,13 +50,16 @@ const Login = (props) => {
         <div>
         <div className='login-page' >
             {userStatus? 
-                <h1 style={{color:'var(--primary)'}}>
-                    Your are connected <Link to='/' onClick={() => {setUserStatus(false); window.localStorage.clear()}}>Disconnect ?</Link>
-                    
-                        {
-                        <Link to='/dashboard'>Go to Dashboard</Link>
-                        }
-                </h1>
+                <div className="" style={{display: "flex",justifyContent: "center", alignItems:"center", width: "90%"}}>
+                <div className="card mx-5 my-5" style={{width: "18rem"}}>
+                    <div className="card-body">
+                        <h4 className="card-title">Hi, {JSON.parse(window.localStorage.getItem('user')).firstName}</h4>
+                        <h6 className="card-subtitle mb-2 text-muted">Your are connected</h6>
+                        <div className="btn btn-danger" onClick={() => {setUserStatus(false); window.localStorage.clear()}}>Logout</div>
+                        <Link to={`/${window.localStorage.getItem("role")}Dashboard`}><div className="btn btn-info mx-2">Go to dashboard</div></Link>
+                    </div>
+                </div>
+                </div>
             :
             <CssVarsProvider>
                 <Sheet

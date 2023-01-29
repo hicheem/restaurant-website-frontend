@@ -40,6 +40,7 @@ const FinalStep = (props) => {
                             <input id="paymentMethod" className="form-control" type="text" placeholder={props.order.payment === 0 ? 'Credit Card' : 'Cash'} aria-label="Disabled input example" disabled />
                         </label>
                     </div>
+                    {props.order.method === 1 &&
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3} direction='row'>
                             <DesktopDatePicker
@@ -57,6 +58,7 @@ const FinalStep = (props) => {
                             />
                         </Stack>
                     </LocalizationProvider>
+                }
                 </div>
                 <hr />
             </div>

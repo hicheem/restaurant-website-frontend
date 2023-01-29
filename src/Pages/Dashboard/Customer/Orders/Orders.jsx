@@ -18,19 +18,18 @@ import { useState } from 'react';
 const Orders = () => {
     
   const [user, ] = useContext(UserContext)
-  const [booking, setBooking] = useState([])
+  const [orders, setOrders] = useState([])
   
   useEffect(()=> {
-    getBooking()
+    getOrders()
   },[])
   
-  const getBooking = () => {
+  const getOrders = () => {
     axiosBase
-      .get(`api/book/getBooking?userId=${user.id}`)
+      .get(`api/order/getOrders?userId=${user.id}`)
       .then(response => {
         if(response.status === 200){
-          setBooking(response.data.booking)
-          console.log(booking)
+          setOrders(response.data.orders)
         }
         else{
           alert(response.data.message)
@@ -41,11 +40,11 @@ const Orders = () => {
 
   
 
-  const headerRow = ['OrderId', 'Name', 'Table Code', 'Table Capacity', 'Total Items', 'Total', 'Status']
+  const headerRow = ['OrderId', 'Name', 'Table Code', 'Table Capacity', 'Total Items', 'Method', 'Total', 'Status']
 
   return (
     <div className='ordersCustomer'>
-      <Navbar />
+      <Navbar ordersPage={true}/>
       <div className="container">
         <div className="navBreadCrumb">
           <Breadcrumbs aria-label="breadcrumb">
@@ -68,7 +67,7 @@ const Orders = () => {
           </Breadcrumbs>
         </div>
         <div className="contentTable mt-5">
-          <TableComp headerRow={headerRow} rows={booking}/>
+          <TableComp headerRow={headerRow} rows={orders}/>
         </div>
         
       </div>

@@ -66,8 +66,7 @@ const Main = () => {
       <CircularProgress color="inherit" />
     </Backdrop>
     <header>
-      <NavBar />  
-      {/* bookingLength={booking.booking.length} */}
+      <NavBar ordersPage={false}/>  
       <div className='myCarasoul'>
         <div id="carouselExampleSlidesOnly" className="carousel slide" data-bs-ride="carousel" style={{height:'5rem'}}>
           <div className="carousel-inner">

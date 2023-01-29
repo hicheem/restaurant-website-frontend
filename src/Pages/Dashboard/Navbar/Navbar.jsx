@@ -57,6 +57,7 @@ const Navbar = (props) => {
             gap:'1rem',
             marginRight:'2rem'
             }}>
+            {!props.ordersPage &&
             <Tooltip title="Orders" placement="bottom" onClick={()=>navigate('orders')}>
               <IconButton aria-label="notification" >
                 <StyledBadge badgeContent='' color='success'>
@@ -64,6 +65,7 @@ const Navbar = (props) => {
                 </StyledBadge>
               </IconButton>
             </Tooltip>
+            }
             <AccountMenu/>
           </div>
         </Toolbar>    

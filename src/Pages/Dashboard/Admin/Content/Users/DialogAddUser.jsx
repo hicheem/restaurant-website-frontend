@@ -52,7 +52,6 @@ const DialogAddUser = (props) => {
                 break
         }
     }
-    console.log(user);
   return (
     <div>
         <Dialog

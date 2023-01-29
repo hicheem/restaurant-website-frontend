@@ -7,12 +7,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 // import axios from 'axios'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Stack } from '@mui/system';
 
 const StepTwo = (props) => {
 
     const [value, setValue] = React.useState(dayjs(new Date().toISOString()));
+    useEffect(() => {
+        props.setOrder({...props.order, datetime:value})
+    })
     const user = JSON.parse(window.localStorage.getItem('user'))
     
     const handleChange = (newValue) => {

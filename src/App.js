@@ -47,7 +47,9 @@ function App() {
                 <Route path='menu' element={<Menu/>}/>
                 <Route path='food' element={<Food/>}/>
                 <Route path='booking' element={<Booking/>}/>
-                <Route path='adminOrders' element={<Booking/>}/>
+                <Route path='adminOrders' element={<h1>Not yet</h1>}/>
+                <Route path='notification' element={<h1>Not yet</h1>}/>
+                <Route path='profile' element={<h1>Not yet</h1>}/>
               </Route> 
               <Route path='/customerDashboard'>
                 <Route index element={

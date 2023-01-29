@@ -53,12 +53,10 @@ const Menu = () => {
     },
   ],[rowId, selectedRowId])
 
-  console.log(menu)
   useEffect(() => {
       setLoading(true)
       axiosBase('api/menu/getMenus')
       .then(response => {
-        console.log(response.data)
         if(response.status === 200)
           setMenu(response.data.menu)
           setLoading(false)

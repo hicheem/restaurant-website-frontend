@@ -7,8 +7,7 @@
     height: 35vh;
 }
 .secondSlide{
-    background-image: url('https://realfood.tesco.com/media/images/1400x919-MargaritaPizza-555a4065-2573-4b41-bcf3-7193cd095d8f-0-1400x919.jpg');
-    
+    background-image: url('https://images.pexels.com/photos/45202/brownie-dessert-cake-sweet-45202.jpeg?cs=srgb&dl=pexels-pixabay-45202.jpg&fm=jpg');    
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -16,8 +15,7 @@
     
 }
 .thirdSlide{
-    background-image: url('https://images.pexels.com/photos/45202/brownie-dessert-cake-sweet-45202.jpeg?cs=srgb&dl=pexels-pixabay-45202.jpg&fm=jpg');
-    
+    background-image: url('https://realfood.tesco.com/media/images/1400x919-MargaritaPizza-555a4065-2573-4b41-bcf3-7193cd095d8f-0-1400x919.jpg');    
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

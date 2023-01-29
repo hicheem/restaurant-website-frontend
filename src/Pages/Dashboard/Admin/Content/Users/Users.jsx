@@ -1,4 +1,4 @@
-import { Alert, AppBar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
+import { Alert, AppBar, Avatar, Backdrop, Button, CircularProgress, Grid, IconButton, Paper, Snackbar, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { DataGrid } from '@mui/x-data-grid';
@@ -39,6 +39,8 @@ const Users = () => {
   const columns = useMemo(()=> 
     [
       { field: 'id', headerName: 'ID', width: 70 },
+      { field: 'photo', headerName: 'Avatar', width: 80 , 
+        renderCell : params => <Avatar src={params.row.photo}/> },
       { field: 'fullName', 
         headerName: 'Full name',
         description: 'This column has a value getter and is not sortable.',

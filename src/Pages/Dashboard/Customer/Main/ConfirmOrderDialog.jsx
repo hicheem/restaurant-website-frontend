@@ -39,8 +39,11 @@ const ConfirmOrderDialog = (props) => {
     const handleNext = () => {
         if(step<3)
             setStep(step + 1)
-        else    
-            fetchOrder()
+        else{
+            const confirm = window.confirm('Confirm order ?')
+            if(confirm)
+                fetchOrder()
+        }    
     }
     const handleBack = () => {
         setStep(step - 1)
@@ -52,7 +55,7 @@ const ConfirmOrderDialog = (props) => {
     const fetchOrder = async () => {
         setOpen(true)
         let tableId = null
-        if(order.capacityTable){
+        if(order.method === 1){
             let response = await fetch(fetchBase + `api/table/bookTable?capacity=${order.capacityTable}`)
             const status = response.status
             response = await response.json()
@@ -78,7 +81,7 @@ const ConfirmOrderDialog = (props) => {
         .post('api/order/AddOrder',
             {
                 userId : user.id, 
-                tableId,
+                tableId: tableId === null ? 0 : tableId,
                 firstName : user.firstName, 
                 lastName : user.lastName, 
                 email : user.email, 
@@ -91,7 +94,6 @@ const ConfirmOrderDialog = (props) => {
         )
         .then(res => {
             if(res.status === 201){
-                console.log(res.data.message)
                 alert(res.data.message)
                 const orderId = res.data.orderId
                 fetchCartItems(orderId, false)
@@ -118,7 +120,6 @@ const ConfirmOrderDialog = (props) => {
         )
         .then(res => {
             if(res.status === 201){
-                console.log(res.data.message)
                 const bookingId = res.data.bookingId
                 fetchCartItems(bookingId, true)
             }
@@ -135,7 +136,7 @@ const ConfirmOrderDialog = (props) => {
                 }
             )
             .then(res => {
-                console.log(res.data.message)
+                return
             })
         ))
     }

@@ -39,9 +39,7 @@ const ItemCard = (props) => {
       <CardActions>
         <Button size="small" color="primary" startIcon={<AddShoppingCartIcon/>}
           onClick={()=>{
-            // props.setSelectedItem({selected:true, id:props.id});
             props.setSelectedItem(props.id);
-            // console.log(props.id);
           }
           }
         >

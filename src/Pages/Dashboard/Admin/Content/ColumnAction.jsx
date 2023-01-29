@@ -13,7 +13,6 @@ const UserActions = (props) => {
     
     
     const handleSubmit = () => {
-        console.log(props.data);
         setLoading(true)
         const fetchURL = props.submitURL+props.id
         fetch(fetchBase + fetchURL,{
@@ -72,7 +71,6 @@ const UserActions = (props) => {
         if(props.rowId === props.id && success){
             setSuccess(false)
         }
-        console.log("hello");
     },[props.rowId])
 
 

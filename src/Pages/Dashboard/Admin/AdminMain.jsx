@@ -11,6 +11,7 @@ import { DataGrid } from '@mui/x-data-grid';
 const AdminMain = () => {
 
   const [tables, setTables] = useState([])
+  const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(false)
 
   const tablesStatus = [
@@ -32,6 +33,17 @@ const AdminMain = () => {
     }, 
   ]
 
+  const bookingsStatus = [
+    {
+      title : 'Active',
+      value : bookings.reduce((acc, item) => item.status === 1 ? acc += 1 : acc, 0 )
+    },
+    {
+      title : 'Pending',
+      value : bookings.reduce((acc, item) => item.status === 0 ? acc += 1 : acc, 0 )
+    },
+  ]
+
   const getTables = () => {
     axiosBase('api/table/getTables')
     .then(response => {
@@ -41,10 +53,20 @@ const AdminMain = () => {
         }
     })
   }
+  const getBookings = () => {
+    axiosBase('api/book/getAllBooking')
+    .then(response => {
+        if(response.status === 200)
+        {
+          setBookings(response.data.booking)
+        }
+    })
+  }
 
   useEffect(() => {
     setLoading(true)
     getTables()
+    getBookings()
     setLoading(false)
   }, [])
 
@@ -58,6 +80,25 @@ const AdminMain = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
 
+      <h5>
+        Booking Info
+      </h5>
+      <Stack spacing={3} direction='row'>
+        {
+          bookingsStatus.map(item => (
+            <Paper elevation={3} sx={{height:'10rem', width:'10rem'}}>
+              <div className='d-flex flex-column align-items-center my-1'>
+                <div className='text-center my-1 fw-bold'>{item.title} Booking</div>
+                <div className='text-center text-success fw-bold fs-1'>{item.value}</div>
+                <img src={tableIcon} height='60' width='60' alt=''/>
+              </div>
+            </Paper>
+            ))
+              }
+      </Stack>
+      <h5 className='my-3'>
+        Table Info
+      </h5>
       <Stack spacing={3} direction='row'>
         {
           tablesStatus.map(item => (
@@ -79,6 +120,7 @@ const AdminMain = () => {
               </div>
             </Paper>
       </Stack>
+      
       <div style={{ height: 400, width: '50%', marginTop:'2rem' }}>
         <DataGrid
           experimentalFeatures={{ newEditingApi: true }}

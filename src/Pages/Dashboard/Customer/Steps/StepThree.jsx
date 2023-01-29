@@ -9,7 +9,6 @@ const StepThree = (props) => {
     const handleClick = (index) =>() => {
 
         setPaymentMethod(index)
-        console.log(paymentMethod)
         props.setOrder({...props.order, payment:index})
     }
   return (

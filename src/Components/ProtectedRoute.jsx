@@ -7,7 +7,6 @@ const ProtectedRoute = (props) => {
     // const userStatus = window.localStorage.getItem("userStatus")
 
     
-    console.log(userStatus)
     if(!userStatus){
         return <Navigate to='/login'/>;
     }
